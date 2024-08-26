@@ -33,10 +33,10 @@ git branch -r
 + vao duong dan: http://localhost:3000/dashboard  
 
 - chay front_end evebox: cd vào thư mục webapp
-+ trong thư mục webapp tạo thêm 1 file ".nvmrc" , nội dung bên trong file : 20.12.2
 + chuyển sang nodejs phiên bản v20: nvm use
 + tải thư viện: npm i
 + vào thư mục webapp/src , tạo file "gitrev.ts", thêm nội dung vào file : export const GIT_REV = "32dfa69";cd
++ mỗi 1 lần chạy phải chuyển qua node version 20 bằng lệnh:  nvm use
 + chạy: npm start
 
 - chay : back_end 
