@@ -20,12 +20,14 @@ app = FastAPI()
 
 client = MongoClient("mongodb://localhost:27017/")
 db = client["cici_flow"]
+db_log = client["log_json"]
 
 ip = "192.168.189.133"
 intf_str = "ens33"
 num_rows = 0
 
 collection = db[f"flow_data_{ip}_{intf_str}"]
+collection_alert = db_log["alert"]
 
 origins = [
     "http://localhost",
@@ -83,6 +85,10 @@ import paramiko
 # def execute_ssh_sudo_command_api(ip: str = Query(1, alias="ip")):
 #     execute_ssh_sudo_command(host, port, username, password, command)
     
+@app.get("/rule/alert/", response_model=List[dict])
+async def get_rule_alerts ():
+    alearts = read_all_data(collection_name=collection_alert)
+    return alearts
 
     
   
