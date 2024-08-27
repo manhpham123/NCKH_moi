@@ -90,6 +90,8 @@ class Static:
 
 client = MongoClient("mongodb://localhost:27017/")
 db = client["cici_flow"]
+db_log = client["log_json"]
+
 
 #client ip
 ip = "192.168.189.133"
@@ -104,7 +106,7 @@ label_mapping = {"BENIGN": 0, "PortScan":1, "DoS slowloris": 2, "Bruce Force": 3
 reverse_label_mapping = {value: key for key, value in label_mapping.items()}
 
 collection = db[f"flow_data_{ip}_{intf_str}"]
-
+collection_alert = db_log["alert"]
 #load model
 model = joblib.load("random_forest_model_312_5_label.joblib")
 
@@ -114,15 +116,18 @@ print("okk")
 
 #CSDL 
 def read_all_data(collection_name):
-    cursor = collection.find()
+    cursor = collection_name.find()
 
-    # Chuyển đổi dữ liệu từ cursor thành danh sách
-    all_data = list(cursor)
-
-    # Đóng kết nối đến MongoDB
-    #client.close()
-
+    # Chuyển đổi dữ liệu từ cursor thành danh sách các từ điển (dict)
+    all_data = []
+    for document in cursor:
+        document["_id"] = str(document["_id"])  # Chuyển đổi ObjectId thành chuỗi
+        all_data.append(document)
+    
     return all_data
+
+
+
 
 def FilterRead_data(filter_field, filter_value):
     """
@@ -401,8 +406,8 @@ def get_alert (df_st):
         if row['label'] != 'BENIGN' : 
             #row['label'] = row['label'].map(label_mapping)
             l_df_a.append(row)
-            print(row['label'])
-            print(len(l_df_a))
+            # print(row['label'])
+            # print(len(l_df_a))
     #     if row["Destination Port"] == 27017 and row['label'] != 'BENIGN':
     #         sum_sql_dos += 1
     #     if row["Destination Port"] == 27017:
@@ -410,9 +415,12 @@ def get_alert (df_st):
     # print(sum_sql_dos)
     #print(sum_sql_dos/sum_sql)   
     return l_df_a
-        
-kq =  get_alert(df_st)
-print(kq)
+   
+
+
+#print(read_all_data(collection_name=collection_alert))     
+# kq =  get_alert(df_st)
+# print(kq)
 
 # st2 = get_ls(df_st)
 
