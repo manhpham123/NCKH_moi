@@ -51,13 +51,14 @@ export function AppRouter() {
           <Route path={"/"} component={Alerts} />
           <Route path={":id"} component={EventView} />
         </Route>
-
         <Route path={"events"} component={Events} />
         <Route path={"event/:id"} component={EventView} />
-        <Route path={"settings"} component={Settings} />
         <Route path={"reports/overview"} component={OverviewReport} />
         <Route path={"reports/alerts"} component={AlertsReport} />
         <Route path={"reports/dhcp"} component={DhcpReport} />
+
+
+        <Route path={"settings"} component={Settings} />
         <Route path={"reports/address/:address"} component={AddressReport} />
         <Route path="ja4/:ja4" component={Ja4Report} />
         <Route path={"stats"} component={Stats} />

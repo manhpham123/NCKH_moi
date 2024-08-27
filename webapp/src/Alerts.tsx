@@ -693,7 +693,9 @@ export function Alerts() {
                 Loading
               </button>
             </Show>
-            <Show when={visibleEvents().length > 0 && !isAllSelected()}>
+
+            {/*==============nút  Select All
+             <Show when={visibleEvents().length > 0 && !isAllSelected()}>
               <button
                 class={"btn btn-secondary me-2"}
                 style="width: 7em;"
@@ -701,8 +703,10 @@ export function Alerts() {
               >
                 Select All
               </button>
-            </Show>
-            <Show when={isAllSelected()}>
+            </Show> */}
+
+            {/*============== nút  Unselect All
+             <Show when={isAllSelected()}>
               <button
                 class={"btn btn-secondary me-2"}
                 style="width: 8em;"
@@ -710,15 +714,19 @@ export function Alerts() {
               >
                 Unselect All
               </button>
-            </Show>
-            <Show when={getSelectedIndexes().length > 0}>
+            </Show> */}
+
+            {/*===================== nút  Archive
+             <Show when={getSelectedIndexes().length > 0}>
               <button
                 class={"btn btn-secondary me-2"}
                 onclick={archiveSelected}
               >
                 Archive
               </button>
-            </Show>
+            </Show> */}
+
+            {/*================= nút Escalate 
             <Show when={getSelectedIndexes().length > 0}>
               <button
                 class={"btn btn-secondary me-2"}
@@ -726,15 +734,16 @@ export function Alerts() {
               >
                 Escalate
               </button>
-            </Show>
-            <div class="d-inline-flex">
+            </Show> */}
+
+            {/* <div class="d-inline-flex">
               <SensorSelect
                 selected={"asdf"}
                 onchange={(sensor) => {
                   setSearchParams({ sensor: sensor });
                 }}
               />
-            </div>
+            </div> */}
           </Col>
           <Col>
             <Form
@@ -944,14 +953,14 @@ export function Alerts() {
                                   class="float-end"
                                   style={"margin-top: 5px !important"}
                                 >
-                                  <Button
+                                  {/* <Button
                                     variant="secondary"
                                     onclick={(e) => {
                                       archive(i());
                                     }}
                                   >
                                     Archive
-                                  </Button>
+                                  </Button> */}
 
                                   <OverlayTrigger
                                     placement="left"
