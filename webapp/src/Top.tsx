@@ -166,30 +166,36 @@ export function Top(props: { brand?: string; disableRange?: boolean }) {
       <HelpModal />
       <Navbar collapseOnSelect expand="lg" class="bg-body-tertiary">
         <Container fluid>
-          <Navbar.Brand href="/">{brand}</Navbar.Brand>
+          {/* <Navbar.Brand href="/">{brand}</Navbar.Brand> */}
           <Navbar.Toggle />
           <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav class="me-auto">
-              <Nav.Item>
+            <Nav class="me-auto"> 
+              {/*=========INBOX=============
+               <Nav.Item>
                 <A href={"/inbox"} class={"nav-link"}>
                   Inbox
                 </A>
-              </Nav.Item>
+              </Nav.Item> */}
+
+              {/*==========  Escalated========
               <Nav.Item>
                 <A href={"/escalated"} class={"nav-link"}>
                   Escalated
                 </A>
-              </Nav.Item>
+              </Nav.Item> */}
+    
               <Nav.Item>
                 <A href={"/alerts"} class={"nav-link"}>
                   Alerts
                 </A>
               </Nav.Item>
+
+              {/*==============STATS========== 
               <Nav.Item>
                 <A href={"/stats"} class={"nav-link"}>
                   Stats
                 </A>
-              </Nav.Item>
+              </Nav.Item> */}
               <Nav.Item>
                 <A href={"/events"} class={"nav-link"}>
                   Events
@@ -257,8 +263,10 @@ export function Top(props: { brand?: string; disableRange?: boolean }) {
                   </Dropdown>
                 </Nav.Item>
               </Show>
-              <Nav.Link onClick={openHelp}>Help</Nav.Link>
-              <NavDropdown
+
+              {/*=====HELP======= <Nav.Link onClick={openHelp}>Help</Nav.Link> */}
+
+              {/* <NavDropdown
                 title={<BiGear />}
                 align={"end"}
                 show={toolDropDownOpen()}
@@ -277,8 +285,9 @@ export function Top(props: { brand?: string; disableRange?: boolean }) {
                     Logout
                   </a>
                 </Show>
-              </NavDropdown>
-              <Nav.Item>
+              </NavDropdown> */}
+
+              {/* <Nav.Item>
                 <button
                   type={"button"}
                   class={"btn btn-secondary btn-sm"}
@@ -286,7 +295,8 @@ export function Top(props: { brand?: string; disableRange?: boolean }) {
                 >
                   {QUEUE_SIZE()}
                 </button>
-              </Nav.Item>
+              </Nav.Item> */}
+
             </Nav>
           </Navbar.Collapse>
         </Container>
