@@ -170,8 +170,8 @@ export async function alerts(options?: {
   if (options?.sensor) {
     params.sensor = options.sensor;
   }
-  //return get("api/1/alerts", params).then((response) => response.data);
-  return get("rule/alert", params).then((response) => response.data);
+  return get("api/1/alerts", params).then((response) => response.data);
+  //return get("rule/alert", params).then((response) => response.data);
 }
 
 export interface EventsQueryParams {
