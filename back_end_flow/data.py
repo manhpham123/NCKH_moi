@@ -15,6 +15,8 @@ import time
 from sklearn.preprocessing import normalize
 #import keras
 from tensorflow.keras.models import load_model
+from datetime import datetime
+from schema.file import FileNameInput, FileResponse
 
 
 protocol_numbers = {
@@ -115,6 +117,48 @@ autoencoder = load_model('autoencoder_55_25_12_14_.h5')
 print("okk")
 
 #CSDL 
+
+
+def get_next_id(collection_name):
+    # Tìm giá trị _id lớn nhất hiện có
+    latest_doc = collection_name.find_one(
+        {"_id": {"$regex": "^rl"}},  # Chỉ lấy những document có _id bắt đầu bằng "rl_"
+        sort=[("_id", -1)]  # Sắp xếp giảm dần theo _id để lấy document mới nhất
+    )
+    print(latest_doc)
+
+    if latest_doc:
+        # Lấy số hiện tại từ _id, tách phần chữ 'rl_' và chuyển thành số nguyên
+        latest_id = int(latest_doc["_id"].split("l")[1])
+        next_id = latest_id + 1  # Tăng giá trị _id lên 1
+    else:
+        # Nếu không có document nào, bắt đầu với giá trị 1
+        next_id = 1
+
+    return f"rl{str(next_id).zfill(3)}"  # Trả về _id tiếp theo theo định dạng "rl_x"
+
+def add_rule_file(file_name : FileNameInput, collection_name):
+    custom_id = get_next_id(collection_name)
+    current_datetime = datetime.now()
+
+# Định dạng ngày tháng năm theo kiểu dd-mm-yyyy
+    formatted_date = current_datetime.strftime("%d-%m-%Y")
+    document = {
+            "_id": custom_id,
+            "filename": file_name.file_name,
+            "creation_date": formatted_date
+        }
+        # Thêm document vào collection
+    result =collection_name.insert_one(document)
+    return result
+
+
+def remove_file(id, collection_name):
+    result =  collection_name.delete_one({"_id": id})
+    return result
+    
+
+
 def read_all_data(collection_name):
     cursor = collection_name.find()
 
