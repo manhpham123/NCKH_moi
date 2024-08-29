@@ -35,7 +35,6 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   CUSTOMER,
   ACCOUNT,
-  RULE,
   SETTING,
   DASHBOARD,
   LOG,
@@ -68,7 +67,7 @@ const items: MenuItem[] = [
     getItem('Option 3', '3'),
     getItem('Option 4', '4'),
   ]),
-  getItem(<Link to={RULE}>Rule</Link>, '5', <LockFilled />),
+  // getItem(<Link to={LOG_PACKAGE}>Rule</Link>, '5', <LockFilled />),
   getItem(<Link to={LOG}>Logs</Link>, '6', <FileTextOutlined />),
   getItem(<Link to={SETTING}>Setting</Link>, '7', <SettingFilled />),
 ];

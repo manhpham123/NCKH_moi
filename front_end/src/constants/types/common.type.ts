@@ -15,6 +15,10 @@ export type Alertfilter = {
   DestinationIP?:string;
   DestinationPort?:string;
 };
+export type Filenamefilter = {
+  filename?: string;
+};
+
 export type Ipfilter = {
   Ip?: string;
 };
