@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Rule = () => {
+const Log_package = () => {
   return (
     <div style={{width: "100%"}}> 
         <iframe 
@@ -15,4 +15,4 @@ const Rule = () => {
   )
 }
 
-export default Rule
+export default Log_package 

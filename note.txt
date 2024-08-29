@@ -37,6 +37,7 @@ rule-files:
 #  - suricata.rules
   - local.rules
 + rule tự viết: sudo gedit /var/lib/suricata/rules/local.rules
++ rule sẵn: sudo gedit /var/lib/suricata/rules/suricata.rules
 - kiêm tra file câu hình:  sudo suricata -T -c /etc/suricata/suricata.yaml -v
 - chạy suricata:  sudo suricata -c /etc/suricata/suricata.yaml -i ens33 
 - file log eve.json : sudo gedit /var/log/suricata/eve.json   

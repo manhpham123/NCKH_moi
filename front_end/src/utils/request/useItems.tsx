@@ -1,5 +1,5 @@
 import useSWR from "swr"
-import { Alertfilter, CommonGetAllParams,Flowfilter } from "../../constants/types/common.type";
+import { Alertfilter, CommonGetAllParams,Flowfilter,Filenamefilter } from "../../constants/types/common.type";
 import { serialize } from "../validate";
 
 export const useAllitem = () => {
@@ -49,3 +49,17 @@ export const useAlert = (
         data, error, isLoading, mutate
     };
 }
+
+export const useListFileRule  = (
+    params?: CommonGetAllParams,
+    filter?: Filenamefilter
+) => {
+    const { data, error, isLoading, mutate } = useSWR(
+        `rule/?page=${params?.page}&limit=${params?.limit}`,
+        { refreshInterval: 0}
+    );
+    return {
+        data, error, isLoading, mutate
+    };
+}
+
