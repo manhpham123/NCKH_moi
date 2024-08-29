@@ -13,6 +13,7 @@ from typing import List, Dict
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 import paramiko
+from schema.file import FileNameInput, FileResponse
 
 
 
@@ -21,6 +22,7 @@ app = FastAPI()
 client = MongoClient("mongodb://localhost:27017/")
 db = client["cici_flow"]
 db_log = client["log_json"]
+db_rule = client["Rule"]
 
 ip = "192.168.189.133"
 intf_str = "ens33"
@@ -28,6 +30,7 @@ num_rows = 0
 
 collection = db[f"flow_data_{ip}_{intf_str}"]
 collection_alert = db_log["alert"]
+collection_file = db_rule["rule_files"]
 
 origins = [
     "http://localhost",
@@ -149,6 +152,10 @@ async def read_items(page: int = Query(1, alias="page"), limit: int = Query(1, a
         # Nếu có lỗi, trả về thông báo lỗi với status code 500
         raise HTTPException(status_code=500, detail=str(e))
     
+    
+
+
+    
 @app.get("/alert/", response_model=Dict)
 async def read_alert(page: int = Query(1, alias="page"), limit: int = Query(1, alias="limit")):
     try:
@@ -200,7 +207,41 @@ async def read_alert(page: int = Query(1, alias="page"), limit: int = Query(1, a
 #     except Exception as e:
 #     # Nếu có lỗi, trả về thông báo lỗi với status code 500
 #         raise HTTPException(status_code=500, detail=str(e))
-    
+
+
+@app.get("/rule_files/", response_model=Dict)
+async def read_file_rules(page: int = Query(1, alias="page"), limit: int = Query(1, alias="limit")):
+    try:
+        
+        skip = (page - 1) * limit
+        # doc tu rule_files 
+        
+        files = read_all_data(collection_file)
+        
+
+        
+        
+        total = len(files)
+        
+        limit = limit
+        
+        page = page
+        
+        # Áp dụng phân trang
+        paginated_items = files[skip : skip + limit]
+        
+        re_ob = {
+            "data": paginated_items,
+            "limit": limit,
+            "page": page,
+            "total": total
+        }
+        
+        # Trả về kết quả dưới dạng JSON
+        return re_ob
+    except Exception as e:
+        # Nếu có lỗi, trả về thông báo lỗi với status code 500
+        raise HTTPException(status_code=500, detail=str(e)) 
 
 @app.get("/statc/protocol", response_model=Dict)
 async def static_protocol():
@@ -274,6 +315,24 @@ async def static_attack():
     except Exception as e:
     # Nếu có lỗi, trả về thông báo lỗi với status code 500
         raise HTTPException(status_code=500, detail=str(e))
+    
+
+@app.post("/rule_files/add_file_name")
+async def add_file_name(file_input: FileNameInput):
+    try:
+        # Tạo document mới với timestamp hiện tại
+        
+        result = add_rule_file(file_input, collection_file)
+        return {"status": "success", "inserted_id": str(result.inserted_id)}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+@app.delete("/rule_file/delete{id}")
+async def delelte_todo(id):
+    response = remove_file(id, collection_file)
+    if response:
+        return "Delete success !"
+    raise HTTPException(404, f"There is no Todo with this {title}")
     
 if __name__ == "__main__":
     import uvicorn
