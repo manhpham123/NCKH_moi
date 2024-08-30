@@ -33,6 +33,14 @@ collection = db[f"flow_data_{ip}_{intf_str}"]
 collection_alert = db_log["alert"]
 collection_file = db_rule["rule_files"]
 
+
+
+#file para
+client_ip = "192.168.189.133"
+username = "william"
+password = "k"  # Thay thế "k" bằng mật khẩu thực tế
+
+
 origins = [
     "http://localhost",
     "http://localhost:3000",
@@ -322,15 +330,18 @@ async def static_attack():
 async def add_file_name(file_input: FileNameInput):
     try:
         # Tạo document mới với timestamp hiện tại
-        
+        remote_file_path = f"/var/lib/suricata/rules/{file_input.file_name}"
         result = add_rule_file(file_input, collection_file)
+        create_file_on_client(client_ip, username, password, remote_file_path, file_input.content)
         return {"status": 200, "inserted_id": str(result.inserted_id)}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.delete("/rule_file/delete/")
 async def delete_file(filename: str = Query(...)):
+    remote_file_path = f"/var/lib/suricata/rules/{filename}"
     response = remove_file(filename, collection_file)
+    delete_file_on_client(client_ip, username, password, remote_file_path)
     if response.deleted_count > 0:
         return {"status": 200, "message": "Delete success!"}
     raise HTTPException(status_code=404, detail=f"There is no file with filename {filename}")\
