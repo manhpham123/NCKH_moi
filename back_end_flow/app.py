@@ -14,6 +14,7 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 import paramiko
 from schema.file import FileNameInput, FileResponse
+from test_rules_all import *
 
 
 
@@ -332,7 +333,40 @@ async def delete_file(filename: str = Query(...)):
     response = remove_file(filename, collection_file)
     if response.deleted_count > 0:
         return {"status": 200, "message": "Delete success!"}
-    raise HTTPException(status_code=404, detail=f"There is no file with filename {filename}")
+    raise HTTPException(status_code=404, detail=f"There is no file with filename {filename}")\
+        
+@app.get("/rule-client/get_rules/", response_model=str)
+async def get_rule_file(filename: str = Query(...)):
+    try:
+        client_ip = "192.168.189.133"
+        username = "william"
+        password = "k"  # Thay thế "k" bằng mật khẩu thực tế
+        remote_file_path = f"/var/lib/suricata/rules/{filename}"
+        rules = read_rules_file_from_client(client_ip, username, password, remote_file_path)
+       
+        return rules
+        # Trả về kết quả dưới dạng JSON
+        #return df_f.to_dict(orient='records')
+    except Exception as e:
+    # Nếu có lỗi, trả về thông báo lỗi với status code 500
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.put("/rule-client/update/",)
+async def update_rule_file(filename: str = Query(...), content: str = Query(...)):
+    try:
+        client_ip = "192.168.189.133"
+        username = "william"
+        password = "k"  # Thay thế "k" bằng mật khẩu thực tế
+        remote_file_path = f"/var/lib/suricata/rules/{filename}"
+        rules = update_file(filename, collection_file)
+        process_rules_file_on_client(client_ip, username, password, remote_file_path, content)
+       
+        return rules
+        # Trả về kết quả dưới dạng JSON
+        #return df_f.to_dict(orient='records')
+    except Exception as e:
+    # Nếu có lỗi, trả về thông báo lỗi với status code 500
+        raise HTTPException(status_code=500, detail=str(e))
 
     
 if __name__ == "__main__":
