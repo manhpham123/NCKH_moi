@@ -6,5 +6,5 @@ class FileNameInput(BaseModel):
 
 class FileResponse(BaseModel):
     file_name: str
-    timestamp: datetime
+    creation_date: datetime
    

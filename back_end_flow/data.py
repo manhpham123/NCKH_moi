@@ -156,6 +156,18 @@ def add_rule_file(file_name : FileNameInput, collection_name):
 def remove_file(filename, collection_name):
     result =  collection_name.delete_one({"filename": filename})
     return result
+
+def update_file(filename, collection_name):
+    current_datetime = datetime.now()
+
+# Định dạng ngày tháng năm theo kiểu dd-mm-yyyy
+    formatted_date = current_datetime.strftime("%d-%m-%Y")
+    
+    result = collection_name.update_one({"filename":filename}, {"$set": {"creation_date": formatted_date}})
+    doc = collection_name.find_one({"filename":filename})
+    
+    
+    return doc
     
 
 
