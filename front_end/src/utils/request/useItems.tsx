@@ -55,7 +55,7 @@ export const useListFileRule  = (
     filter?: Filenamefilter
 ) => {
     const { data, error, isLoading, mutate } = useSWR(
-        `rule/?page=${params?.page}&limit=${params?.limit}`,
+        `rule_files/?page=${params?.page}&limit=${params?.limit}`,
         { refreshInterval: 0}
     );
     return {

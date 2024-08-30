@@ -36,7 +36,7 @@ export type UpdateCustomerStatus = {
   status?: number;
 };
 export type DeleteKeyParams = {
-  id?: string;
+  filename?: string;
 };
 export type Account = {
   accountId: number,

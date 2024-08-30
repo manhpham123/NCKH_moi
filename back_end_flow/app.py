@@ -323,16 +323,17 @@ async def add_file_name(file_input: FileNameInput):
         # Tạo document mới với timestamp hiện tại
         
         result = add_rule_file(file_input, collection_file)
-        return {"status": "success", "inserted_id": str(result.inserted_id)}
+        return {"status": 200, "inserted_id": str(result.inserted_id)}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-    
-@app.delete("/rule_file/delete{id}")
-async def delelte_todo(id):
-    response = remove_file(id, collection_file)
-    if response:
-        return "Delete success !"
-    raise HTTPException(404, f"There is no Todo with this {title}")
+
+@app.delete("/rule_file/delete/")
+async def delete_file(filename: str = Query(...)):
+    response = remove_file(filename, collection_file)
+    if response.deleted_count > 0:
+        return {"status": 200, "message": "Delete success!"}
+    raise HTTPException(status_code=404, detail=f"There is no file with filename {filename}")
+
     
 if __name__ == "__main__":
     import uvicorn

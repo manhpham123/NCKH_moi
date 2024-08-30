@@ -7,7 +7,7 @@ import { Form, Input, Space, Typography, message } from "antd";
 import ButtonCustom from "../../components/ButtonCustom";
 import { useForm } from "antd/es/form/Form";
 import TextArea from "antd/es/input/TextArea";
-// import { RuleApi } from "../../apis/rule";
+import { RuleApi } from "../../apis/rule";
 const AddFileRule = () => {
     const dispatch = useDispatch();
     const [dataRuleFileChange, setDataRuleFileChange] = useState("");
@@ -52,17 +52,26 @@ const AddFileRule = () => {
         setDataRuleFileChange(e.target.value);
     }
     const createRuleFileHanlder = async (values: any) => {
-        // setIsLoading(true);
-        // try {
-        //     const res = await RuleApi.addRuleFile(values);
-        //     if(res.status === 200){
-        //         message.success("Created rule file successfully");
-        //         form.resetFields();
-        //     }else message.error("Created rule file failed");
-        // } catch (error) {
-        //     message.error("Created rule file failed");
-        // }
-        // setIsLoading(false);
+        // console.log("tên file:", values.name);
+        // console.log("nội dung rule:", values.rules);
+        //================= lấy ra tên file và nối đuôi file vào=======
+        // Nối đuôi '.rules' vào giá trị của name
+        const filenameWithExtension = `${values.name}.rules`;
+        // Tạo đối tượng mới chỉ chứa thuộc tính name với đuôi .rules
+        const dataToSend = { name: filenameWithExtension };
+        //================ xong lấy ra tên file====================
+        console.log(dataToSend )
+        setIsLoading(true);
+        try {
+            const res = await RuleApi.addRuleFile(dataToSend);
+            if(res.status === 200){
+                message.success("Tạo File Thành Công");
+                form.resetFields();
+            }else message.error("Tạo File Thất Bại");
+        } catch (error) {
+            message.error("Tạo File Thất Bại");
+        }
+        setIsLoading(false);
     }
     return (
         <div className="container-wrapper">
@@ -73,7 +82,7 @@ const AddFileRule = () => {
                     name="name"
                     rules={[{ required: true }]}
                 >
-                    <Input placeholder="Rule" addonAfter=".yaml"/>
+                    <Input placeholder="Rule" addonAfter=".rules"/>
                 </Form.Item>
                 <Form.Item
                     label="Nội Dung"
@@ -84,7 +93,7 @@ const AddFileRule = () => {
                 </Form.Item>
                 <Space style={{ justifyContent: "end", width: "100%" }}>
                     <ButtonCustom
-                        label="Create"
+                        label="Tạo File"
                         bgColor="#2862AF"
                         type="primary"
                         htmlType="submit"

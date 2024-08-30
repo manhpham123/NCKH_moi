@@ -153,8 +153,8 @@ def add_rule_file(file_name : FileNameInput, collection_name):
     return result
 
 
-def remove_file(id, collection_name):
-    result =  collection_name.delete_one({"_id": id})
+def remove_file(filename, collection_name):
+    result =  collection_name.delete_one({"filename": filename})
     return result
     
 

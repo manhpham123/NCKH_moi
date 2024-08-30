@@ -8,7 +8,7 @@ import { CommonGetAllParams } from "../../../constants/types/common.type";
 import CardTitleCustom from "../../../components/CardTitleCustom";
 import { useNavigate } from "react-router-dom";
 import { Filenamefilter} from "../../../constants/types/common.type";
-//import { RuleApi } from "../../../../apis/rule";
+import { RuleApi } from "../../../apis/rule";
 import { useListFileRule } from "../../../utils/request";
 
 
@@ -23,8 +23,9 @@ const ListFileRuleTable: FC<Props> = ({ filter }) => {
     page: 1,
   });
   //================= API==============================,  // isLoading={!data && isLoading}
-  //const { data, isLoading, error, mutate } = useListFileRule(params);
+  const { data, isLoading, error, mutate } = useListFileRule(params);
   //============== dữ liệu mẫu
+  /*
   const data = {
     "data": [
       {
@@ -64,19 +65,22 @@ const ListFileRuleTable: FC<Props> = ({ filter }) => {
     "page": 1,
     "total": 8
   }
+    */
 
   const removeRuleFileHandler = async (filename?: string) => {
-    // try {
-    //   const res = await RuleApi.deleteRuleFile({ rule_name: filename?.replace('.conf', '') });
-    //   if (res.status === 200) {
-    //     message.success("Deleted rule file successfully");
-    //     mutate();
-    //   }
-    //   else message.error("Deleted rule file failed");
-    // } catch (error) {
-    //   message.error("Deleted rule file failed");
-    // }
+   
+    try {
+      const res = await RuleApi.DeleteFileRule({filename});
+      if (res.status === 200) {
+        message.success("Xóa file thành công");
+        mutate();
+      }
+      else message.error("Xóa file thất bại");
+    } catch (error) {
+      message.error("Xóa file thất bại");
+    }
   }
+
 
   const columns: ColumnsType<any> = [
     {
@@ -120,7 +124,7 @@ const ListFileRuleTable: FC<Props> = ({ filter }) => {
           <ListButtonActionUpdate
           // khi nhấn vào nút edit thì chuyển qua đường dẫn url mới, đồng thời ta lấy tên file và bỏ đi đuôi .yaml để hiện lên đường 
           // dẫn url
-            editFunction={() => navigate(`/rule-details/${record.filename.replace('.yaml', '')}`)}
+            editFunction={() => navigate(`/rule-details/${record.filename}`)}
             removeFunction={() => removeRuleFileHandler(record.filename)}
           />
         </>
@@ -136,8 +140,7 @@ const ListFileRuleTable: FC<Props> = ({ filter }) => {
           dataSource={data?.data}
           columns={columns}
           bordered={true}
-          // isLoading={!data && isLoading}
-          isLoading={!data}
+          isLoading={!data && isLoading}
           limit={params.limit || 10}
           total={data ? data.total : 0}
           onLimitChange={(limit) => {
